@@ -21,7 +21,7 @@ export function ShopPage() {
   return (
     <AuthorisedPage>
       <Header
-        title="Shop"
+        title="E-Stroi.kz"
         sx={{ mb: 2 }}
         rightContent={
           <IconButton

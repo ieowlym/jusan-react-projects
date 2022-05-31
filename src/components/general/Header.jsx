@@ -4,10 +4,21 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Menu, MenuItem, Tooltip, styled } from "@mui/material";
+import {
+  Avatar,
+  Menu,
+  MenuItem,
+  Tooltip,
+  styled,
+  Button,
+  Box,
+} from "@mui/material";
 import { stringAvatar } from "../../utils/getAvatarString";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { logout } from "../../store/slice/auth";
+import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownTwoTone";
+import { CatalogModal } from "../shop/CatalogModal";
+import { fetchCatalog } from "../../fetchers/fetchCatalog";
 
 const MyBtn = styled("button")`
   margin: 0;
@@ -18,6 +29,14 @@ const MyBtn = styled("button")`
 
 export function Header({ title, rightContent, ...rest }) {
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [catalog, setCatalog] = useState([]);
+  const [catalogOpened, setCatalogOpened] = useState(false);
+
+  useEffect(() => {
+    fetchCatalog().then((response) => {
+      setCatalog(response);
+    });
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -26,8 +45,8 @@ export function Header({ title, rightContent, ...rest }) {
     [
       {
         name: "Logout",
-        do: <MyBtn onClick={() => dispatch(logout())}>Logout</MyBtn>
-      }
+        do: <MyBtn onClick={() => dispatch(logout())}>Logout</MyBtn>,
+      },
     ];
 
   const handleOpenUserMenu = (event) => {
@@ -52,9 +71,25 @@ export function Header({ title, rightContent, ...rest }) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
           {title}
         </Typography>
+        <div>
+          <Button
+            variant="contained"
+            sx={{ ml: 2 }}
+            onClick={() => setCatalogOpened(true)}
+          >
+            Catalog
+            <KeyboardArrowDownTwoToneIcon />
+          </Button>
+          <CatalogModal
+            open={catalogOpened}
+            onClose={() => setCatalogOpened(false)}
+            catalog={catalog}
+          />
+        </div>
+        <Box sx={{ flexGrow: 1 }}></Box>
         <div>
           {rightContent}
 
@@ -77,12 +112,12 @@ export function Header({ title, rightContent, ...rest }) {
             anchorEl={anchorElUser}
             anchorOrigin={{
               vertical: "top",
-              horizontal: "right"
+              horizontal: "right",
             }}
             keepMounted
             transformOrigin={{
               vertical: "top",
-              horizontal: "right"
+              horizontal: "right",
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}

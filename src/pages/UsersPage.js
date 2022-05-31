@@ -1,6 +1,6 @@
 import React from "react";
 import { UsersModule } from "../components/user/UsersModule";
 
-export function UserPage() {
+export function UsersPage() {
   return <UsersModule />;
 }
