@@ -12,29 +12,21 @@ import {
 } from "@mui/material";
 
 const style = {
-  position: "relative",
-  //   top: "50%",
-  //   left: "50%",
-  //   transform: "translate(-50%, -50%)",
-  //   width: 400,
-  //   bgcolor: "background.paper",
-  //   border: "2px solid #000",
-  //   boxShadow: 24,
-  width: "100%",
-  maxWidth: 300,
+  position: "absolute",
   maxHeight: 500,
   bgcolor: "background.paper",
   top: 55,
   left: "185px",
   overflowY: "auto",
 };
-export const CatalogModal = ({ catalog, ...props }) => {
-  const [secondLevelOpened, setSecondLevelOpened] = React.useState(false);
+export const CatalogModal = ({catalog, ...props}) => {
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = React.useState(null);
 
   return (
     <Modal {...props}>
       <Box sx={style}>
-        <nav aria-label="secondary mailbox folders">
+        <nav aria-label="secondary mailbox folders" style={{ display: 'flex' }}>
           <List>
             {catalog.map((item) => (
               <>
@@ -42,33 +34,50 @@ export const CatalogModal = ({ catalog, ...props }) => {
                   <ListItemButton
                     component="a"
                     href="#simple-list"
-                    // onClick={setSecondLevelOpened(true)}
+                    onMouseEnter={() => {setSelectedCategory(item)}}
                   >
-                    <ListItemText primary={item.name} />
+                    <ListItemText primary={item.name}/>
                   </ListItemButton>
-                  {/* <Modal
-                    open={secondLevelOpened}
-                    onClose={setSecondLevelOpened(false)}
-                  >
-                    <Box sx={style}>
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        Text in a modal
-                      </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor
-                        ligula.
-                      </Typography>
-                    </Box>
-                  </Modal> */}
                 </ListItem>
-                <Divider />
+                <Divider/>
               </>
             ))}
           </List>
+          {selectedCategory && (
+            <List>
+              {selectedCategory.childCategories.map((item) => (
+                <>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      component="a"
+                      href="#simple-list"
+                      onMouseEnter={() => {setSelectedSubcategory(item)}}
+                    >
+                      <ListItemText primary={item.name}/>
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider/>
+                </>
+              ))}
+            </List>
+          )}
+          {selectedSubcategory && (
+            <List>
+              {selectedSubcategory.childCategories.map((item) => (
+                <>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      component="a"
+                      href="#simple-list"
+                    >
+                      <ListItemText primary={item.name}/>
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider/>
+                </>
+              ))}
+            </List>
+          )}
         </nav>
       </Box>
     </Modal>

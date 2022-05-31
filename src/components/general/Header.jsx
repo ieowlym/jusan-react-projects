@@ -27,21 +27,12 @@ const MyBtn = styled("button")`
   border: none;
 `;
 
-export function Header({ title, rightContent, ...rest }) {
+export function Header({ title, leftContent, rightContent, ...rest }) {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [catalog, setCatalog] = useState([]);
-  const [catalogOpened, setCatalogOpened] = useState(false);
-
-  useEffect(() => {
-    fetchCatalog().then((response) => {
-      setCatalog(response);
-    });
-  }, []);
 
   const dispatch = useDispatch();
 
   const settings =
-    // ["Profile", "Account", "Dashboard", "Logout"];
     [
       {
         name: "Logout",
@@ -75,21 +66,9 @@ export function Header({ title, rightContent, ...rest }) {
           {title}
         </Typography>
         <div>
-          <Button
-            variant="contained"
-            sx={{ ml: 2 }}
-            onClick={() => setCatalogOpened(true)}
-          >
-            Catalog
-            <KeyboardArrowDownTwoToneIcon />
-          </Button>
-          <CatalogModal
-            open={catalogOpened}
-            onClose={() => setCatalogOpened(false)}
-            catalog={catalog}
-          />
+          { leftContent }
         </div>
-        <Box sx={{ flexGrow: 1 }}></Box>
+        <Box sx={{ flexGrow: 1 }} />
         <div>
           {rightContent}
 
