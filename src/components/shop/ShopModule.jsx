@@ -14,7 +14,7 @@ import {
 
 //components
 import { ProductItem } from "./ProductItem";
-import { BasketDrawer } from "./BasketDrawer";
+import { BasketDrawer } from "./BasketDrawerTest";
 
 //redux
 import { loadProducts } from "../../store/actions/loadProducts";

@@ -62,7 +62,7 @@ export const LoginForm = ({ className, setToken }) => {
           type="password"
           {...register("password", {
             required: required(),
-            validate: validatePassword
+            validate: validatePassword,
           })}
           {...getInputState(formState, "password")}
         />
